@@ -10,7 +10,7 @@ from django.core import serializers
 class LoyaltyHealthViewSet(viewsets.ViewSet):
     def getHealth(self,request):
         try:
-            return JsonResponse(status=status.HTTP_200_OK)
+            return JsonResponse({},status=status.HTTP_200_OK)
         except Exception as e:
             return JsonResponse({'message':'Loyalty Service Unavailable'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
 class LoyaltyViewSet(viewsets.ViewSet):
