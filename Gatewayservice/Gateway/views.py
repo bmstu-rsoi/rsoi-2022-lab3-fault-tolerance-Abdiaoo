@@ -17,7 +17,7 @@ class GatewayhealthSet(viewsets.ViewSet):
         try:
             return JsonResponse(status=status.HTTP_200_OK)
         except Exception as e:
-            return JsonResponse(status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'message':'Gateway Service Unavailable'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
 class GatewayViewSet(viewsets.ViewSet):
     
     def list_loyalty(self,request):
