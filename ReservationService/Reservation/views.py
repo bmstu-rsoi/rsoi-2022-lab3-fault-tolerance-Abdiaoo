@@ -11,7 +11,7 @@ class ReservationHealthViewSet(viewsets.ViewSet):
         try:
             return JsonResponse(status=status.HTTP_200_OK)
         except Exception as e:
-            return JsonResponse(status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'message':'Reservation Service Unavailable'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
 class ReservationViewSet(viewsets.ViewSet):
     def __init__(self):
         if Hotel.objects.count()==0:
