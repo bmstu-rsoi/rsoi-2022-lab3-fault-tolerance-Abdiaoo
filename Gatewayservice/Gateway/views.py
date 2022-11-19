@@ -11,6 +11,13 @@ from datetime import datetime
 from time import sleep
 from django.shortcuts import redirect
 import time
+
+class GatewayhealthSet(viewsets.ViewSet):
+    def getHealth(self,request):
+        try:
+            return JsonResponse(status=status.HTTP_200_OK)
+        except Exception as e:
+            return JsonResponse(status=status.HTTP_400_BAD_REQUEST)
 class GatewayViewSet(viewsets.ViewSet):
     
     def list_loyalty(self,request):

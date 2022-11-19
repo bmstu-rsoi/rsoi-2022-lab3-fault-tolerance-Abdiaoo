@@ -7,6 +7,12 @@ import json
 from django.core import serializers
 from django.http import JsonResponse
 
+class PaymentHealthViewSet(viewsets.ViewSet):
+    def getHealth(self,request):
+        try:
+            return JsonResponse(status=status.HTTP_200_OK)
+        except Exception as e:
+            return JsonResponse(status=status.HTTP_400_BAD_REQUEST)
 class PaymentViewSet(viewsets.ViewSet):
     def listePayment(self,requets):
         try:

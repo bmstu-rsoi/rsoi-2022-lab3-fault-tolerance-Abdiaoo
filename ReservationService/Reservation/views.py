@@ -6,6 +6,12 @@ from .models import Reservation,Hotel
 from django.http import JsonResponse
 from pytz import timezone
 
+class ReservationHealthViewSet(viewsets.ViewSet):
+    def getHealth(self,request):
+        try:
+            return JsonResponse(status=status.HTTP_200_OK)
+        except Exception as e:
+            return JsonResponse(status=status.HTTP_400_BAD_REQUEST)
 class ReservationViewSet(viewsets.ViewSet):
     def __init__(self):
         if Hotel.objects.count()==0:

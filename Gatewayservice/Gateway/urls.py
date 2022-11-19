@@ -1,6 +1,6 @@
 from django.urls import path
 from django.contrib import admin
-from .views import GatewayViewSet
+from .views import GatewayViewSet,GatewayhealthSet
 
 urlpatterns=[
     path('reservations',GatewayViewSet.as_view({
@@ -19,5 +19,8 @@ urlpatterns=[
     })),
     path('loyalty',GatewayViewSet.as_view({
         'get':'list_loyalty'
+    })),
+    path('health',GatewayhealthSet.as_view({
+        'get':'getHealth'
     })),
 ]

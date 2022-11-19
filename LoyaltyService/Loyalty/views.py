@@ -6,6 +6,13 @@ from .models import UserLoyalty
 import json
 from django.http import JsonResponse
 from django.core import serializers
+
+class LoyaltyHealthViewSet(viewsets.ViewSet):
+    def getHealth(self,request):
+        try:
+            return JsonResponse(status=status.HTTP_200_OK)
+        except Exception as e:
+            return JsonResponse(status=status.HTTP_400_BAD_REQUEST)
 class LoyaltyViewSet(viewsets.ViewSet):
     def __init__(self):
         if UserLoyalty.objects.count()==0:
