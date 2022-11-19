@@ -12,7 +12,7 @@ class PaymentHealthViewSet(viewsets.ViewSet):
         try:
             return JsonResponse(status=status.HTTP_200_OK)
         except Exception as e:
-            return JsonResponse({'message':'Loyalty Service Unavailable'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            return JsonResponse({'message':'Payment Service Unavailable'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
 class PaymentViewSet(viewsets.ViewSet):
     def listePayment(self,requets):
         try:
