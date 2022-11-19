@@ -12,7 +12,7 @@ class LoyaltyHealthViewSet(viewsets.ViewSet):
         try:
             return JsonResponse(status=status.HTTP_200_OK)
         except Exception as e:
-            return JsonResponse(status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'message':'Loyalty Service Unavailable'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
 class LoyaltyViewSet(viewsets.ViewSet):
     def __init__(self):
         if UserLoyalty.objects.count()==0:
