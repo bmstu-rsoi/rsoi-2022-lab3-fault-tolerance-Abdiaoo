@@ -1,8 +1,8 @@
 version: "3"
 services:
-  postgres:
+  postgres-dbs:
     image: library/postgres:13
-    container_name: postgres
+    container_name: postgres-dbs
     restart: on-failure
     environment:
       POSTGRES_USER: postgres
@@ -13,8 +13,56 @@ services:
       - ./postgres/:/docker-entrypoint-initdb.d/
     ports:
       - "5432:5432"
-
-# TODO добавить сервисы
-
+  gatewayservice:
+    container_name: gatewayservice
+    image: gatewayservice
+    build:
+      context: ./Gatewayservice
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app/Gatewayservice
+    depends_on:
+      - postgres-dbs
+      - paymentservice
+      - loyaltyservice
+      - reservationservice
+  paymentservice:
+    container_name: paymentservice
+    image: paymentservice
+    build:
+      context: ./PaymentService
+    restart: always
+    ports:
+      - "8060:8060"
+    volumes:
+      - .:/app/PaymentService
+    depends_on:
+      - postgres-dbs
+  loyaltyservice:
+    container_name: loyaltyservice
+    image: loyaltyservice
+    build:
+      context: ./LoyaltyService
+    restart: always
+    ports:
+      - "8050:8050"
+    volumes:
+      - .:/app/LoyaltyService
+    depends_on:
+      - postgres-dbs
+  reservationservice:
+    container_name: reservationservice
+    image: reservationservice
+    build:
+      context: ./ReservationService
+    restart: always
+    ports:
+      - "8070:8070"
+    volumes:
+      - .:/app/ReservationService
+    depends_on:
+      - postgres-dbs
 volumes:
   db-data:
