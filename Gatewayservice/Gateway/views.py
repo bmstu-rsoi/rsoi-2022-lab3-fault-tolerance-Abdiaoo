@@ -303,6 +303,7 @@ def upgradeLoyalty(self):
                             user['uncountedReservation']=user['uncountedReservation']-1
             usernamesloyaltydown.clear()
         except requests.exceptions.ConnectionError:
+            print('')
             global loyalty_service
             loyalty_service=loyalty_service+1
             return JsonResponse({'message':'pas encore disponible!'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
