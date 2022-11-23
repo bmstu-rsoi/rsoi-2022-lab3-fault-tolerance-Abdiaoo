@@ -13,7 +13,6 @@ from django.shortcuts import redirect
 import time
 usernamesloyaltydown=[]
 reservation_service=0
-reservation_service=0
 loyalty_service=0
 payment_service=0
 class GatewayhealthSet(viewsets.ViewSet):
