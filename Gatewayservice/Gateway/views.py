@@ -271,7 +271,7 @@ class GatewayViewSet(viewsets.ViewSet):
                     Response(status=status.HTTP_400_BAD_REQUEST)
                 return Response(status=status.HTTP_204_NO_CONTENT)
             except requests.exceptions.ConnectionError:
-                gloabal loyalty_service
+                global loyalty_service
                 loyalty_service=loyalty_service+1
                 userunupdated=False
                 for user in usernamesloyaltydown:
