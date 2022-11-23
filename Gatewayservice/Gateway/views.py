@@ -12,9 +12,9 @@ from time import sleep
 from django.shortcuts import redirect
 import time
 usernamesloyaltydown=[]
-reservation_service=0
-loyalty_service=0
-payment_service=0
+# reservation_service=0
+# loyalty_service=0
+# payment_service=0
 class GatewayhealthSet(viewsets.ViewSet):
     def getHealth(self,request):
         return JsonResponse({},status=status.HTTP_200_OK)
@@ -26,8 +26,8 @@ class GatewayViewSet(viewsets.ViewSet):
         try:
             loyalties_check=requests.get('http://loyaltyservice:8050/manage/health')
         except requests.exceptions.ConnectionError:
-            global loyalty_service
-            loyalty_service=loyalty_service+1
+#             global loyalty_service
+#             loyalty_service=loyalty_service+1
             return JsonResponse({'message':'Loyalty Service unavailable'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
         username=request.headers['X-User-Name']
         loyalties=requests.get('http://loyaltyservice:8050/api/v1/loyalty')
@@ -42,15 +42,15 @@ class GatewayViewSet(viewsets.ViewSet):
         try:
             loyalties_check=requests.get('http://loyaltyservice:8050/manage/health')
         except requests.exceptions.ConnectionError:
-            global loyalty_service
-            loyalty_service=loyalty_service+1
+#             global loyalty_service
+#             loyalty_service=loyalty_service+1
             return JsonResponse({'message':'Loyalty Service unavailable'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
         username=request.headers['X-User-Name']
         try:
             reservation_check=requests.get('http://reservationservice:8070/manage/health')
         except requests.exceptions.ConnectionError:
-            global reservation_service
-            reservation_service=reservation_service+1
+#             global reservation_service
+#             reservation_service=reservation_service+1
             return JsonResponse({'message':'Reservation Service unavailable'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
         hotels=requests.get('http://reservationservice:8070/api/v1/hotels')
         if hotels.status_code!=200:
@@ -74,8 +74,8 @@ class GatewayViewSet(viewsets.ViewSet):
         try:
             payment_check=requests.get('http://paymentservice:8060/manage/health')
         except requests.exceptions.ConnectionError:
-            global payment_service
-            payment_service=payment_service+1
+#             global payment_service
+#             payment_service=payment_service+1
             return JsonResponse({'message':'Payment Service unavailable'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
         payment=requests.post('http://paymentservice:8060/api/v1/Payment',json={'status':'PAID','price':cost})
         if payment.status_code!=201:
@@ -101,8 +101,8 @@ class GatewayViewSet(viewsets.ViewSet):
         try:
             loyalties_check=requests.get('http://loyaltyservice:8050/manage/health')
         except requests.exceptions.ConnectionError:
-            global loyalty_service
-            loyalty_service=loyalty_service+1
+#             global loyalty_service
+#             loyalty_service=loyalty_service+1
             loyalty_down=True
         username=request.headers['X-User-Name']
         if (loyalty_down):
@@ -118,8 +118,8 @@ class GatewayViewSet(viewsets.ViewSet):
         try:
             reservation_check=requests.get('http://reservationservice:8070/manage/health')
         except requests.exceptions.ConnectionError:
-            global reservation_service
-            reservation_service=reservation_service+1
+#             global reservation_service
+#             reservation_service=reservation_service+1
             return JsonResponse({'message':'Reservation Service unavailable'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
         reservations=requests.get('http://reservationservice:8070/api/v1/reservations')
         if reservations.status_code!=200:
@@ -131,8 +131,8 @@ class GatewayViewSet(viewsets.ViewSet):
         try:
             payment_check=requests.get('http://paymentservice:8060/manage/health')
         except requests.exceptions.ConnectionError:
-            global payment_service
-            payment_service=payment_service+1
+#             global payment_service
+#             payment_service=payment_service+1
             return JsonResponse({'message':'Payment Service unavailable'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
         payments=requests.get('http://paymentservice:8060/api/v1/Payment')
         if payments.status_code!=200:
@@ -157,8 +157,8 @@ class GatewayViewSet(viewsets.ViewSet):
         try:
             reservation_check=requests.get('http://reservationservice:8070/manage/health')
         except requests.exceptions.ConnectionError:
-            global reservation_service
-            reservation_service=reservation_service+1
+#             global reservation_service
+#             reservation_service=reservation_service+1
             return JsonResponse({'message':'Reservation Service unavailable'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
         reservation=requests.get('http://reservationservice:8070/api/v1/reservations/{}'.format(reservationUid))
         if reservation.status_code!=200:
@@ -169,8 +169,8 @@ class GatewayViewSet(viewsets.ViewSet):
         try:
             payment_check=requests.get('http://paymentservice:8060/manage/health')
         except requests.exceptions.ConnectionError:
-            global reservation_service
-            reservation_service=reservation_service+1
+#             global reservation_service
+#             reservation_service=reservation_service+1
             return JsonResponse({'message':'Payment Service unavailable'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
         payment=requests.get('http://paymentservice:8060/api/v1/Payment/{}'.format(reservation.json()['paymentUid']))
         if payment.status_code!=200:
@@ -185,8 +185,8 @@ class GatewayViewSet(viewsets.ViewSet):
         try:
             reservation_check=requests.get('http://reservationservice:8070/manage/health')
         except requests.exceptions.ConnectionError:
-            global reservation_service
-            reservation_service=reservation_service+1
+#             global reservation_service
+#             reservation_service=reservation_service+1
             return JsonResponse({'message':'Reservation Service unavailable'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
         hotels=requests.get('http://reservationservice:8070/api/v1/hotels')
         if hotels.status_code != 200:
@@ -202,8 +202,8 @@ class GatewayViewSet(viewsets.ViewSet):
         try:
             reservation_check=requests.get('http://reservationservice:8070/manage/health')
         except requests.exceptions.ConnectionError:
-            global reservation_service
-            reservation_service=reservation_service+1
+#             global reservation_service
+#             reservation_service=reservation_service+1
             return JsonResponse({'message':'Reservation Service unavailable'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
         reservations=requests.get('http://reservationservice:8070/api/v1/reservations')
         if reservations.status_code!=200:
@@ -216,8 +216,8 @@ class GatewayViewSet(viewsets.ViewSet):
         try:
             payment_check=requests.get('http://paymentservice:8060/manage/health')
         except requests.exceptions.ConnectionError:
-            global reservation_service
-            reservation_service=reservation_service+1
+#             global reservation_service
+#             reservation_service=reservation_service+1
             return JsonResponse({'message':'Payment Service unavailable'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
         payments=requests.get('http://paymentservice:8060/api/v1/Payment')
         if payments.status_code!=200:
@@ -241,8 +241,8 @@ class GatewayViewSet(viewsets.ViewSet):
         try:
             reservation_check=requests.get('http://reservationservice:8070/manage/health')
         except requests.exceptions.ConnectionError:
-            global reservation_service
-            reservation_service=reservation_service+1
+#             global reservation_service
+#             reservation_service=reservation_service+1
             return JsonResponse({'message':'Reservation Service unavailable'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
         reservation=requests.patch('http://reservationservice:8070/api/v1/reservations/{}'.format(reservationUid),data={'status':'CANCELED'})
         if reservation.status_code!=200:
@@ -250,8 +250,8 @@ class GatewayViewSet(viewsets.ViewSet):
         try:
             payment_check=requests.get('http://paymentservice:8060/manage/health')
         except requests.exceptions.ConnectionError:
-            global payment_service
-            payment_service=payment_service+1
+#             global payment_service
+#             payment_service=payment_service+1
             return JsonResponse({'message':'Payment Service unavailable'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
         if reservation.json()['username']==username:
             payment=requests.patch('http://paymentservice:8060/api/v1/Payment/{}'.format(reservation.json()['paymentUid']),data={'status':'CANCELED'})
@@ -271,8 +271,8 @@ class GatewayViewSet(viewsets.ViewSet):
                     Response(status=status.HTTP_400_BAD_REQUEST)
                 return Response(status=status.HTTP_204_NO_CONTENT)
             except requests.exceptions.ConnectionError:
-                global loyalty_service
-                loyalty_service=loyalty_service+1
+#                 global loyalty_service
+#                 loyalty_service=loyalty_service+1
                 userunupdated=False
                 for user in usernamesloyaltydown:
                     if user['username']==username:
@@ -304,6 +304,6 @@ def upgradeLoyalty(self):
             usernamesloyaltydown.clear()
         except requests.exceptions.ConnectionError:
             print('')
-            global loyalty_service
-            loyalty_service=loyalty_service+1
+#             global loyalty_service
+#             loyalty_service=loyalty_service+1
             return JsonResponse({'message':'pas encore disponible!'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
