@@ -19,12 +19,10 @@ class GatewayhealthSet(viewsets.ViewSet):
     def getHealth(self,request):
         return JsonResponse({},status=status.HTTP_200_OK)
 class GatewayViewSet(viewsets.ViewSet):
-    def __init__(self):
-        if len(usernamesloyaltydown)>0:
-            upgradeLoyalty(self)
     def list_loyalty(self,request):
         try:
             loyalties_check=requests.get('http://loyaltyservice:8050/manage/health')
+            upgradeLoyalty()
         except requests.exceptions.ConnectionError:
 #             global loyalty_service
 #             loyalty_service=loyalty_service+1
@@ -41,6 +39,7 @@ class GatewayViewSet(viewsets.ViewSet):
     def bookaHotel(self,request):
         try:
             loyalties_check=requests.get('http://loyaltyservice:8050/manage/health')
+            upgradeLoyalty()
         except requests.exceptions.ConnectionError:
 #             global loyalty_service
 #             loyalty_service=loyalty_service+1
@@ -100,6 +99,7 @@ class GatewayViewSet(viewsets.ViewSet):
         loyalty_down=False;
         try:
             loyalties_check=requests.get('http://loyaltyservice:8050/manage/health')
+            upgradeLoyalty()
         except requests.exceptions.ConnectionError:
 #             global loyalty_service
 #             loyalty_service=loyalty_service+1
@@ -260,6 +260,7 @@ class GatewayViewSet(viewsets.ViewSet):
             try:
                 loyalties_check=requests.get('http://loyaltyservice:8050/manage/health')
                 loyalties=requests.get('http://loyaltyservice:8050/api/v1/loyalty')
+                upgradeLoyalty()
                 if loyalties.status_code!=200:
                     Response(status=status.HTTP_400_BAD_REQUEST)
                 for loyalty in loyalties.json():
@@ -283,27 +284,25 @@ class GatewayViewSet(viewsets.ViewSet):
                     usernamesloyaltydown.append({'username': username, 'uncountedReservation': 1})
                 return Response(status=status.HTTP_204_NO_CONTENT)
             
-def upgradeLoyalty(self):
-    global usernamesloyaltydown
-    if len(usernamesloyaltydown) > 0:
-        try:
-            loyalties_check=requests.get('http://loyaltyservice:8050/manage/health')
-            for user in usernamesloyaltydown:
-                if user['uncountedReservation']> 0:
-                    while user['uncountedReservation']> 0:
-                        loyalties=requests.get('http://loyaltyservice:8050/api/v1/loyalty')
-                        if loyalties.status_code!=200:
-                            Response(status=status.HTTP_400_BAD_REQUEST)
-                        for loyalty in loyalties.json():
-                            if loyalty['username']==user['username']:
-                                userLoyalty=loyalty
-                                break
-                        updateloyalty=requests.get('http://loyaltyservice:8050/api/v1/loyalty/{}'.format(userLoyalty['id']))
-                        if updateloyalty.status_code==200:
-                            user['uncountedReservation']=user['uncountedReservation']-1
-            usernamesloyaltydown.clear()
-        except requests.exceptions.ConnectionError:
-            print('')
-#             global loyalty_service
-#             loyalty_service=loyalty_service+1
-            return JsonResponse({'message':'pas encore disponible!'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
+    def upgradeLoyalty(self):
+        global usernamesloyaltydown
+        print(usernamesloyaltydown)
+        if len(usernamesloyaltydown) > 0:
+            try:
+                loyalties_check=requests.get('http://loyaltyservice:8050/manage/health')
+                for user in usernamesloyaltydown:
+                    if user['uncountedReservation']> 0:
+                        while user['uncountedReservation']> 0:
+                            loyalties=requests.get('http://loyaltyservice:8050/api/v1/loyalty')
+                            if loyalties.status_code!=200:
+                                Response(status=status.HTTP_400_BAD_REQUEST)
+                            for loyalty in loyalties.json():
+                                if loyalty['username']==user['username']:
+                                    userLoyalty=loyalty
+                                    break
+                            updateloyalty=requests.get('http://loyaltyservice:8050/api/v1/loyalty/{}'.format(userLoyalty['id']))
+                            if updateloyalty.status_code==200:
+                                user['uncountedReservation']=user['uncountedReservation']-1
+                usernamesloyaltydown.clear()
+            except requests.exceptions.ConnectionError:
+                return JsonResponse({'message':'pas encore disponible!'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
