@@ -16,25 +16,6 @@ class GatewayhealthSet(viewsets.ViewSet):
     def getHealth(self,request):
         return JsonResponse({},status=status.HTTP_200_OK)
 class GatewayViewSet(viewsets.ViewSet):
-    def __init__(self):
-        try:
-            loyalties_check=requests.get('http://loyaltyservice:8050/manage/health')
-            for user in usernamesloyaltydown:
-                if user['uncountedReservation']> 0:
-                    while user['uncountedReservation']> 0:
-                        loyalties=requests.get('http://loyaltyservice:8050/api/v1/loyalty')
-                        if loyalties.status_code!=200:
-                            Response(status=status.HTTP_400_BAD_REQUEST)
-                        for loyalty in loyalties.json():
-                            if loyalty['username']==user['username']:
-                                userLoyalty=loyalty
-                                break
-                        updateloyalty=requests.get('http://loyaltyservice:8050/api/v1/loyalty/{}'.format(userLoyalty['id']))
-                        if updateloyalty.status_code==200:
-                            user['uncountedReservation']=user['uncountedReservation']-1
-            usernamesloyaltydown.clear()
-        except requests.exceptions.ConnectionError:
-            return JsonResponse({'message':'Loyalty Service unavailable'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
     def list_loyalty(self,request):
         username=request.headers['X-User-Name']
         try:
