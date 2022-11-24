@@ -20,6 +20,7 @@ class GatewayhealthSet(viewsets.ViewSet):
         return JsonResponse({},status=status.HTTP_200_OK)
 class GatewayViewSet(viewsets.ViewSet):
     def list_loyalty(self,request):
+        username=request.headers['X-User-Name']
         try:
             loyalties_check=requests.get('http://loyaltyservice:8050/manage/health')
             for user in usernamesloyaltydown:
@@ -40,7 +41,6 @@ class GatewayViewSet(viewsets.ViewSet):
             global loyalty_serv
             loyalty_serv=loyalty_serv+1
             return JsonResponse({'message':'Loyalty Service unavailable'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
-        username=request.headers['X-User-Name']
         loyalties=requests.get('http://loyaltyservice:8050/api/v1/loyalty')
         if loyalties.status_code != 200:
             return JsonResponse(status=status.HTTP_400_BAD_REQUEST)
@@ -50,6 +50,7 @@ class GatewayViewSet(viewsets.ViewSet):
                 break
         return JsonResponse(userLoyalty,status=status.HTTP_200_OK,safe=False,json_dumps_params={'ensure_ascii': False})
     def bookaHotel(self,request):
+        username=request.headers['X-User-Name']
         try:
             loyalties_check=requests.get('http://loyaltyservice:8050/manage/health')
             for user in usernamesloyaltydown:
@@ -70,7 +71,6 @@ class GatewayViewSet(viewsets.ViewSet):
             global loyalty_serv
             loyalty_serv=loyalty_serv+1
             return JsonResponse({'message':'Loyalty Service unavailable'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
-        username=request.headers['X-User-Name']
         try:
             reservation_check=requests.get('http://reservationservice:8070/manage/health')
         except requests.exceptions.ConnectionError:
@@ -123,6 +123,7 @@ class GatewayViewSet(viewsets.ViewSet):
     
     def GetInfoUser(self,request):
         loyalty_down=False;
+        username=request.headers['X-User-Name']
         try:
             loyalties_check=requests.get('http://loyaltyservice:8050/manage/health')
             for user in usernamesloyaltydown:
@@ -143,7 +144,6 @@ class GatewayViewSet(viewsets.ViewSet):
 #             global loyalty_service
 #             loyalty_service=loyalty_service+1
             loyalty_down=True
-        username=request.headers['X-User-Name']
         if (loyalty_down):
             userLoyalty={}
         else:
